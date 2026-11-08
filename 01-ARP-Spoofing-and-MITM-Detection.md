@@ -146,7 +146,7 @@ arp.opcode == 1 && eth.src == 08:00:27:53:0c:ba
 
 ### Figure 2 - ARP Packet Count 
 
-![ARP Request Packet Count](images/arp-request-packet-count.png)
+![ARP Packet Count](images/arp-spoofing-and-mitm-detection/arp-request-packet-count.jpeg)
 
 ### Filter #3 — Identify ARP Replies for the Gateway IP
 
@@ -164,7 +164,7 @@ arp.opcode == 2 && arp.src.proto_ipv4 == 192.168.10.1
 
 ### Figure 3 - Gateway MAC Conflict 
 
-![ARP Gateway MAC Conflict](images/arp-gateway-mac-conflict.png)
+![Gateway MAC Conflict](images/arp-spoofing-and-mitm-detection/arp-gateway-mac-conflict.jpeg)
 
 ### Results — Gateway-IP Mapping Investigation
 
