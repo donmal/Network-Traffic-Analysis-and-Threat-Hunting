@@ -132,7 +132,9 @@ arp.opcode == 1 && eth.src == 08:00:27:53:0c:ba
   
 - `&&` requires both conditions to match.
 
-*Figure 2 — Combined ARP opcode and source MAC display filter.*
+### Figure 1 - ARP Request Analysis 
+
+![ARP Request Source Analysis](images/arp-request-source-analysis.png)
 
 ### Results
 
@@ -144,7 +146,9 @@ arp.opcode == 1 && eth.src == 08:00:27:53:0c:ba
 | Packet type | ARP requests |
 | Source Ethernet MAC | `08:00:27:53:0c:ba` |
 
-*Figure 3 — Wireshark status bar confirms 507 matching frames (51.0% of the capture).*
+### Figure 2 - ARP Packet Count 
+
+![ARP Request Packet Count](images/arp-request-packet-count.png)
 
 ### Filter #3 — Identify ARP Replies for the Gateway IP
 
@@ -160,7 +164,9 @@ arp.opcode == 2 && arp.src.proto_ipv4 == 192.168.10.1
   
 - Inspect the earliest matching packet by **frame number** (ascending); don't assume the latest mapping is the original.
 
-*Figure 6 — Filtered ARP replies for `192.168.10.1`. The earliest displayed matching frame is frame 513, reporting `192.168.10.1 is at 2c:30:33:e2:d5:c3`.*
+### Figure 3 - Gateway MAC Conflict 
+
+![ARP Gateway MAC Conflict](images/arp-gateway-mac-conflict.png)
 
 ### Results — Gateway-IP Mapping Investigation
 
