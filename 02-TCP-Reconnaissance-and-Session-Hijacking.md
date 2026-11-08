@@ -2,31 +2,56 @@
 
 ## Executive Summary
 
-This investigation examined two network packet captures from Hack The Box Academy's *Intermediate Network Traffic Analysis* training: `nmap_syn_scan.pcapng` and `TCP-hijacking.pcap`. Using Wireshark, the analysis quantified TCP packets with the ACK flag set and inspected a plaintext Telnet conversation to identify the username visible in the captured session. The first capture contained **429 ACK-flagged packets out of 848 total packets (50.6%)**; the second revealed the username **`administrator`** in a followed TCP stream. These findings demonstrate packet-level triage and session reconstruction, but neither the ACK count nor the username alone proves malicious scanning or successful session hijacking.
+This investigation examined two network packet captures from Hack The Box Academy's *Intermediate Network Traffic Analysis* training: 
+`nmap_syn_scan.pcapng` and `TCP-hijacking.pcap`. 
+
+Using Wireshark, the analysis quantified TCP packets with the ACK flag set and inspected a plaintext Telnet conversation to identify the username visible in the captured session.
+
+The first capture contained **429 ACK-flagged packets out of 848 total packets (50.6%)**; the second revealed the username **`administrator`** in a followed TCP stream.
+
+These findings demonstrate packet-level triage and session reconstruction, but neither the ACK count nor the username alone proves malicious scanning or successful session hijacking.
 
 ## Investigation Objectives
 
 - Examine TCP flag behavior in a capture associated with SYN scanning.
+  
 - Quantify packets carrying the TCP ACK flag and validate the result using Wireshark statistics.
+  
 - Inspect a separate TCP capture containing Telnet communication.
+  
 - Reconstruct application-layer content using **Follow TCP Stream**.
+  
 - Identify the username visible in the plaintext Telnet session.
+  
 - Distinguish directly observed evidence from attack hypotheses.
+  
 - Outline practical network detection and response opportunities.
 
 ## Background
 
 ### TCP Handshake and Reconnaissance
 
-A normal TCP connection is generally established through **SYN → SYN/ACK → ACK**. The ACK flag acknowledges received sequence data and is also present in many established-session packets, as well as some reset packets. SYN scanning typically probes ports without completing full connections; interpretation requires considering the **direction, sequence, flags, ports, and timing**, rather than treating all ACK-flagged packets as malicious.
+A normal TCP connection is generally established through **SYN → SYN/ACK → ACK**. 
+
+The ACK flag acknowledges received sequence data and is also present in many established-session packets, as well as some reset packets. 
+
+SYN scanning typically probes ports without completing full connections; interpretation requires considering the **direction, sequence, flags, ports, and timing**, rather than treating all ACK-flagged packets as malicious.
 
 ### TCP Resets and Session Hijacking
 
-TCP RST packets abruptly terminate or reject connections. TCP session hijacking involves an unauthorized party interfering with or taking over an existing TCP session. Evidence of hijacking generally requires more than readable session contents: analysts should investigate unexpected sequence behavior, competing senders, anomalous resets, and other corroborating indicators.
+TCP RST packets abruptly terminate or reject connections. 
+
+TCP session hijacking involves an unauthorized party interfering with or taking over an existing TCP session. 
+
+Evidence of hijacking generally requires more than readable session contents: analysts should investigate unexpected sequence behavior, competing senders, anomalous resets, and other corroborating indicators.
 
 ### Telnet Exposure
 
-Telnet commonly transports interactive terminal content without encryption. A packet capture may therefore reveal terminal output, typed commands, and sometimes usernames or credentials. The visibility of `administrator` in this exercise demonstrates **plaintext session exposure**, not necessarily that the user authenticated successfully or that an attacker hijacked the session.
+Telnet commonly transports interactive terminal content without encryption. 
+
+A packet capture may therefore reveal terminal output, typed commands, and sometimes usernames or credentials.
+
+The visibility of `administrator` in this captured session demonstrates **plaintext session exposure**, not necessarily that the user authenticated successfully or that an attacker hijacked the session.
 
 ### MITRE ATT&CK Mapping
 
@@ -44,21 +69,33 @@ Telnet commonly transports interactive terminal content without encryption. A pa
 | `TCP-hijacking.pcap` | Telnet stream inspection |
 | Wireshark | Display filtering, protocol statistics, TCP stream reconstruction |
 | Parrot OS terminal | Opening local capture files |
-| Hack The Box Academy | Source of the training exercises and captures |
+| Hack The Box Academy | Source of the training environment and captures |
 
 ## Investigation Scope
 
-Two **separate** captures were analyzed. The investigation does not assert that their traffic belongs to one intrusion sequence. Scope was limited to the reported TCP ACK count and visible Telnet username, supplemented by detection-oriented interpretation. The underlying PCAP files were not independently supplied for reanalysis; reported findings are based on the provided lab notes and screenshots.
+Two **separate** captures were analyzed. 
+
+The investigation does not assert that their traffic belongs to one intrusion sequence.
+
+Scope was limited to the reported TCP ACK count and visible Telnet username, supplemented by detection-oriented interpretation. 
+
+The underlying PCAP files were not independently supplied for reanalysis; reported findings are based on the provided lab notes and screenshots.
 
 ## Investigation Methodology
 
 1. Open `nmap_syn_scan.pcapng` in Wireshark.
+   
 2. Apply `tcp.flags.ack == 1` to isolate ACK-flagged TCP packets.
+   
 3. Compare the filtered packet count with the full capture count and inspect **Statistics → Protocol Hierarchy**.
+   
 4. Open `TCP-hijacking.pcap` as a separate investigation artifact.
+   
 5. Locate Telnet traffic and select **Follow → TCP Stream**.
+   
 6. Read the reconstructed plaintext terminal conversation and record the username shown.
-7. Document the evidence and avoid overinterpreting the two lab results.
+   
+7. Document the evidence and avoid overinterpreting the two investigation findings.
 
 ## Investigation Artifacts
 
@@ -93,7 +130,7 @@ This selects **any** TCP packet with ACK set, including `ACK`, `PSH, ACK`, `SYN,
 
 ### Evidence — ACK-Flagged Traffic
 
-![Wireshark displaying ACK-flagged TCP packets](images/01-tcp-ack-filter.png)
+Figure 1 — Wireshark display filter isolating ACK-flagged TCP traffic, including visible RST, ACK packets.
 
 The supplied screenshot shows TCP traffic from `192.168.10.1` to `192.168.10.5`, including several packets labeled `RST, ACK`, with the ACK filter applied.
 
@@ -101,7 +138,7 @@ The supplied screenshot shows TCP traffic from `192.168.10.1` to `192.168.10.5`,
 
 Open **Statistics → Protocol Hierarchy** while the display filter is active.
 
-![Wireshark Protocol Hierarchy statistics showing 429 filtered TCP packets](images/02-protocol-hierarchy.png)
+Figure 2 — Wireshark Protocol Hierarchy displaying 429 ACK-flagged packets in the filtered capture.
 
 ### Results
 
@@ -114,7 +151,11 @@ Open **Statistics → Protocol Hierarchy** while the display filter is active.
 | Share of total capture | **50.6%** |
 | Example visible flag combination | `RST, ACK` |
 
-**Finding:** The capture contains **429 packets with the ACK flag set**. The count is verified by the Wireshark status bar and Protocol Hierarchy view. This statistic alone does not establish the number of SYN probes, the number of targeted ports, or whether a scan succeeded.
+**Finding:** The capture contains **429 packets with the ACK flag set**. 
+
+The count is verified by the Wireshark status bar and Protocol Hierarchy view. 
+
+This statistic alone does not establish the number of SYN probes, the number of targeted ports, or whether a scan succeeded.
 
 ## Investigation #2 — TCP Session and Telnet Analysis
 
@@ -140,19 +181,23 @@ A supplementary filter for standard Telnet traffic is:
 tcp.port == 23
 ```
 
-Port 23 is conventional, but Telnet may run on other ports. The protocol decoder and stream content should be checked rather than relying only on the port number.
+Port 23 is conventional, but Telnet may run on other ports. 
+
+The protocol decoder and stream content should be checked rather than relying only on the port number.
 
 ### Follow the Conversation
 
 Select a Telnet packet, then **right-click → Follow → TCP Stream**. This reconstructs the selected bidirectional TCP conversation and makes readable application data easier to inspect.
 
-![Wireshark Follow TCP Stream menu on Telnet traffic](images/03-follow-tcp-stream.png)
+Figure 3 — Wireshark Follow TCP Stream functionality used to reconstruct the Telnet conversation.
 
 ### Evidence — Reconstructed Telnet Stream
 
-![Reconstructed Telnet stream showing administrator terminal text and uname command](images/04-telnet-stream.png)
+Figure 4 — Reconstructed plaintext Telnet session displaying the administrator username and terminal activity.
 
-The screenshot visibly contains the prompt text `administrator@kali` and the command `uname -a`, followed by Linux system information. Wireshark uses different colors for the two directions of the stream; these colors represent directions, **not intrinsically malicious versus legitimate traffic**.
+The screenshot visibly contains the prompt text `administrator@kali` and the command `uname -a`, followed by Linux system information. 
+
+Wireshark uses different colors for the two directions of the stream; these colors represent directions, **not intrinsically malicious versus legitimate traffic**.
 
 ### Results
 
@@ -165,7 +210,9 @@ The screenshot visibly contains the prompt text `administrator@kali` and the com
 | Example visible command | `uname -a` |
 | Session content | Readable terminal text |
 
-**Finding:** The username **`administrator`** is visible in the reconstructed Telnet session. The screenshot supports the username attribution to displayed terminal text, but does not independently establish whether a login was successful, whether credentials were captured, or whether session hijacking occurred.
+**Finding:** The username **`administrator`** is visible in the reconstructed Telnet session. 
+
+The screenshot supports the username attribution to displayed terminal text, but does not independently establish whether a login was successful, whether credentials were captured, or whether session hijacking occurred.
 
 ## Investigation Findings
 
@@ -174,7 +221,7 @@ The screenshot visibly contains the prompt text `administrator@kali` and the com
 | TCP Handshake Abnormalities | ACK filter and Protocol Hierarchy | 429 of 848 packets carry ACK | ACK prevalence alone does not prove reconnaissance |
 | Telnet Session Inspection | Follow TCP Stream screenshot | `administrator` appears in readable terminal content | No direct proof of hijacking or credential theft |
 
-The two exercises collectively demonstrate **transport-layer filtering** and **application-layer session reconstruction**, two complementary SOC network-analysis skills.
+The two investigations collectively demonstrate **transport-layer filtering** and **application-layer session reconstruction**, two complementary SOC network-analysis skills.
 
 ## Detection Logic
 
@@ -200,11 +247,17 @@ Look for Telnet sessions involving sensitive hosts, administrative accounts, unu
 telnet || tcp.port == 23
 ```
 
-Where policy allows, review exposed commands or login material and correlate with endpoint and authentication records. Avoid publishing actual passwords or private session data.
+Where policy allows, review exposed commands or login material and correlate with endpoint and authentication records. 
+
+Avoid publishing actual passwords or private session data.
 
 ### Indicator #3 — Potential TCP Session Interference
 
-Investigate unexplained bursts of RST packets, inconsistent TCP sequence/acknowledgment patterns, and abrupt changes in traffic behavior. Confirm against surrounding packets and other telemetry before attributing session hijacking.
+Investigate unexplained bursts of RST packets, inconsistent TCP sequence/acknowledgment patterns, and abrupt changes in traffic behavior. 
+
+Confirm against surrounding packets and other telemetry before attributing session hijacking.
+
+**Detection engineering consideration**: TCP flag anomalies should be correlated with connection state, sequence numbers, timing, and endpoint telemetry. This reduces false positives caused by legitimate connection resets and normal TCP behavior.
 
 ## MITRE ATT&CK Mapping — Investigation Relevance
 
@@ -243,12 +296,10 @@ These are **investigation observables**, not verified malicious IOCs.
 
 ## Conclusion
 
-This investigation used Wireshark to analyze two distinct network captures. In `nmap_syn_scan.pcapng`, **429 of 848 packets** matched the TCP ACK flag filter. In `TCP-hijacking.pcap`, following a Telnet TCP stream revealed the username **`administrator`** and readable terminal content. Together, the exercises demonstrate essential SOC capabilities in TCP flag analysis, protocol statistics, and plaintext session inspection. Further packet-level and cross-source evidence would be required to establish active reconnaissance or a successful TCP session hijacking incident.
+This investigation used Wireshark to analyze two distinct network captures. In `nmap_syn_scan.pcapng`, **429 of 848 packets** matched the TCP ACK flag filter. In `TCP-hijacking.pcap`, following a Telnet TCP stream revealed the username **`administrator`** and readable terminal content.
 
-## Lab Attribution and Evidence Notes
+Together, the investigations demonstrate essential SOC capabilities in TCP flag analysis, protocol statistics, and plaintext session inspection. 
 
-- Training source: **Hack The Box Academy — Intermediate Network Traffic Analysis**.
-- Screenshots are supplied by the analyst from the training environment.
-- The original HTB PCAP resources are **not redistributed** in this repository.
-- Findings are limited to the supplied notes and screenshots; no additional PCAP analysis is claimed.
+Further packet-level and cross-source evidence would be required to establish active reconnaissance or a successful TCP session hijacking incident.
+
 
