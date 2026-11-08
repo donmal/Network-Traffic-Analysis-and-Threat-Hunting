@@ -1,4 +1,5 @@
 ﻿# Network Traffic Analysis — SOC Threat Hunting & Anomaly Detection
+Write-up of Hack the Box Academy labs. Practice work.
 
 **A five-part, hands-on network security investigation portfolio using Wireshark, packet captures, protocol analysis, and detection-oriented reasoning.**
 
@@ -11,9 +12,13 @@ The focus is on **what the evidence shows, how to reproduce the analysis, what i
 ## Investigation Objectives
 
 - Establish a baseline understanding of normal protocol behavior and recognize anomalies.
+  
 - Use Wireshark display filters, protocol statistics, and stream reconstruction to isolate relevant evidence.
+  
 - Distinguish packet-level observations from inferred attacker intent or confirmed compromise.
+  
 - Develop practical detection and triage recommendations for SOC workflows.
+  
 - Communicate technical findings in reproducible, evidence-based reports.
 
 ## Project Structure
@@ -38,11 +43,16 @@ The focus is on **what the evidence shows, how to reproduce the analysis, what i
 
 ## Investigation Workflow
 
-1. **Scope:** Define the suspicious protocol, question, and available capture.
+1. **Scope:** Define the suspicious protocol, investigation objective, and available capture.
+   
 2. **Filter:** Narrow the traffic using protocol fields and packet characteristics.
+   
 3. **Inspect:** Examine packet details, timing, counts, conversations, and payloads where available.
+   
 4. **Correlate:** Compare findings with expected protocol behavior and other observations.
+   
 5. **Assess:** Separate confirmed facts from possible attack hypotheses and identify gaps.
+   
 6. **Recommend:** Document useful detection logic, validation steps, and mitigations.
 
 ## Example Wireshark Filters
@@ -72,9 +82,13 @@ These are investigation-specific examples, **not standalone indicators of malici
 ## Key SOC Takeaways
 
 - **ARP:** High-volume requests or changing IP-to-MAC mappings warrant investigation, but do not alone establish MITM or ARP poisoning.
+  
 - **TCP:** ACK and RST counts provide useful context; handshake sequences and connection state are needed before attributing reconnaissance or hijacking.
+  
 - **HTTP:** Request patterns, error responses, and unexpected data in URLs can surface enumeration and exfiltration leads, but require context.
+  
 - **Encoded data:** Base64 is an encoding mechanism, not encryption or proof of a covert channel; traffic behavior and payload context matter.
+  
 - **DNS / ICMP:** Suspicious payloads and anomalous exchanges can indicate tunneling; confirmation benefits from fuller packet inspection and host telemetry.
 
 ## Evidence, Attribution & Reproducibility
