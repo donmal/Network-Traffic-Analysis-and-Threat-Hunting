@@ -1,5 +1,5 @@
 ﻿# Network Traffic Analysis — SOC Threat Hunting & Anomaly Detection
-Write-up of Hack the Box Academy labs. Practice work.
+| Hack-the-Box Academy lab write-up | 
 
 **A five-part, hands-on network security investigation portfolio using Wireshark, packet captures, protocol analysis, and detection-oriented reasoning.**
 
