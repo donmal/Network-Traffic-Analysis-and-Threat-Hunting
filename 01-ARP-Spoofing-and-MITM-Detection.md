@@ -108,8 +108,6 @@ unzip pcap_files.zip
 wireshark Intermediate_Network_Traffic_Analysis/ARP_Poison.pcapng
 ```
 
-*Figure 1 — Lab capture archive extraction in the Parrot terminal.*
-
 ### Filter #1 — Identify ARP Requests
 
 **Purpose:** Limit the display to ARP request frames rather than replies.
@@ -134,7 +132,7 @@ arp.opcode == 1 && eth.src == 08:00:27:53:0c:ba
 
 ### Figure 1 - ARP Request Analysis 
 
-![ARP Request Source Analysis](images/arp-request-source-analysis.png)
+![ARP Request Analysis](./images/arp-request-source-analysis.png) 
 
 ### Results
 
