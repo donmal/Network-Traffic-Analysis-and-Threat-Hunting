@@ -152,7 +152,7 @@ Three successive Base64 decoding operations recovered a readable HTB training ar
 
 ### Figure 11 - Triple Base64 Decoding
 
-![Triple Base64 Decoding](https://raw.githubusercontent.com/donmal/Network-Traffic-Analysis-and-Threat-Hunting/main/images/covert-channels-and-tunneling-detection/triple-base64-decoding.jpeg)
+![Triple Base64 Decoding](https://raw.githubusercontent.com/donmal/Network-Traffic-Analysis-and-Threat-Hunting/main/images/covert-channels-and-tunneling-detection/triple-base64-decoding.png)
 
 ### Finding
 
