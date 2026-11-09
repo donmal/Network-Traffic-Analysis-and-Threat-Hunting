@@ -133,7 +133,9 @@ The provided screenshot verifies the first filter and its count; it does **not**
 
 ### Evidence
 
-Figure 1 — Wireshark Protocol Hierarchy displaying 204 HTTP GET requests identified through protocol filtering.
+### Figure 7 - HTTP GET Analysis 
+
+![HTTP GET Analysis](images/web-attack-detection-and-http-anomalies/http-get-analysis.jpeg)
 
 ### Interpretation
 
@@ -164,7 +166,9 @@ http.response.code == 400
 
 ### Evidence
 
-Figure 2 — Wireshark display filter identifying seven HTTP 400 Bad Request responses in the captured traffic.
+### Figure 8 - HTTP 400 Responses 
+
+![HTTP 400 Responses](images/web-attack-detection-and-http-anomalies/http-400-responses.jpeg)
 
 ### Interpretation
 
@@ -192,9 +196,9 @@ Investigate potential cookie exposure in **XSS_Simple.pcapng** by reconstructing
    
 ### Evidence
 
-Figure 3 — Wireshark Follow TCP Stream functionality used to reconstruct the HTTP conversation.
+### Figure 9 - Cookie Exposure Analysis
 
-Figure 4 — Reconstructed HTTP stream revealing a cookie parameter in the GET request and an HTTP 404 Not Found response.
+![Cookie Exposure Analysis](images/web-attack-detection-and-http-anomalies/http-cookie-exposure.jpeg)
 
 ### Results
 
