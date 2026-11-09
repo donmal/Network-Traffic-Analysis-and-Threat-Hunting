@@ -111,7 +111,9 @@ echo 'VGhpcyBpcyBhIHNlY3VyZSBrZXk6IEtleTEyMzQ1Njc4OQo=' | base64 -d
 This is a secure key: Key123456789
 ```
 
-Figure 1 — Base64 decoding performed in the Parrot OS terminal, revealing readable plaintext from the encoded string.
+### Figure 10 - Base64 Payload Decoding
+
+![Base64 Payload Decoding](https://raw.githubusercontent.com/donmal/Network-Traffic-Analysis-and-Threat-Hunting/main/images/covert-channels-and-tunneling-detection/base64-payload-decoding.jpeg)
 
 ### Finding
 
@@ -148,7 +150,9 @@ HTB{Would_you_forward_me_this_pretty_please}
 ```
 Three successive Base64 decoding operations recovered a readable HTB training artifact, demonstrating successful interpretation of multiply encoded content.
 
-Figure 2 — Recursive Base64 decoding performed in the Parrot OS terminal, revealing the underlying training artifact after three decoding passes.
+### Figure 11 - Triple Base64 Decoding
+
+![Triple Base64 Decoding](https://raw.githubusercontent.com/donmal/Network-Traffic-Analysis-and-Threat-Hunting/main/images/covert-channels-and-tunneling-detection/triple-base64-decoding.jpeg)
 
 ### Finding
 
@@ -198,9 +202,9 @@ tcp.stream == 0
 
 The second filter targets stream 0, as shown in the supplied screenshot; other captures may use different stream indices.
 
-Figure 3 — Wireshark Follow TCP Stream functionality used to reconstruct the Telnet conversation over IPv6.
+### Figure 12 - IPv6 Telnet Stream Analysis
 
-Figure 4 — Reconstructed IPv6 Telnet session displaying readable application-layer text.
+![IPv6 Telnet Stream Analysis](https://raw.githubusercontent.com/donmal/Network-Traffic-Analysis-and-Threat-Hunting/main/images/covert-channels-and-tunneling-detection/ipv6-telnet-stream-analysis.jpeg)
 
 ### Observed Result
 
