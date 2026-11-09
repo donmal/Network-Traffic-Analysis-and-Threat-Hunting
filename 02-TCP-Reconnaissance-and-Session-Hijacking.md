@@ -128,10 +128,6 @@ tcp.flags.ack == 1
 
 This selects **any** TCP packet with ACK set, including `ACK`, `PSH, ACK`, `SYN, ACK`, and `RST, ACK` combinations. It does **not** mean that all matched packets are standalone ACKs or evidence of a scan.
 
-### Evidence — ACK-Flagged Traffic
-
-Figure 1 — Wireshark display filter isolating ACK-flagged TCP traffic, including visible RST, ACK packets.
-
 The supplied screenshot shows TCP traffic from `192.168.10.1` to `192.168.10.5`, including several packets labeled `RST, ACK`, with the ACK filter applied.
 
 ### Figure 4 - TCP ACK Flag Analysis
