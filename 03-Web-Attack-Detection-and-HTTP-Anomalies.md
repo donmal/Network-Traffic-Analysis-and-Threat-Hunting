@@ -198,7 +198,7 @@ Investigate potential cookie exposure in **XSS_Simple.pcapng** by reconstructing
 
 ### Figure 9 - Cookie Exposure Analysis
 
-![Cookie Exposure Analysis](images/web-attack-detection-and-http-anomalies/http-cookie-exposure.jpeg)
+![Cookie Exposure Analysis](https://raw.githubusercontent.com/donmal/Network-Traffic-Analysis-and-Threat-Hunting/main/images/web-attack-detection-and-http-anomalies/cookie-exposure-analysis.jpeg)
 
 ### Results
 
