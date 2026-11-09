@@ -134,11 +134,17 @@ Figure 1 — Wireshark display filter isolating ACK-flagged TCP traffic, includi
 
 The supplied screenshot shows TCP traffic from `192.168.10.1` to `192.168.10.5`, including several packets labeled `RST, ACK`, with the ACK filter applied.
 
+### Figure 4 - TCP ACK Flag Analysis
+
+![TCP ACK Flag Analysis](https://raw.githubusercontent.com/donmal/Network-Traffic-Analysis-and-Threat-Hunting/main/images/tcp-reconnaissance-and-session-hijacking/tcp-ack-flag-analysis.jpeg)
+
 ### Statistics Validation
 
 Open **Statistics → Protocol Hierarchy** while the display filter is active.
 
-Figure 2 — Wireshark Protocol Hierarchy displaying 429 ACK-flagged packets in the filtered capture.
+### Figure 5 - TCP ACK Packet Statistics 
+
+![TCP ACK Packet Statistics](https://raw.githubusercontent.com/donmal/Network-Traffic-Analysis-and-Threat-Hunting/main/images/tcp-reconnaissance-and-session-hijacking/tcp-ack-packet-statistics.jpeg)
 
 ### Results
 
@@ -189,15 +195,15 @@ The protocol decoder and stream content should be checked rather than relying on
 
 Select a Telnet packet, then **right-click → Follow → TCP Stream**. This reconstructs the selected bidirectional TCP conversation and makes readable application data easier to inspect.
 
-Figure 3 — Wireshark Follow TCP Stream functionality used to reconstruct the Telnet conversation.
-
 ### Evidence — Reconstructed Telnet Stream
-
-Figure 4 — Reconstructed plaintext Telnet session displaying the administrator username and terminal activity.
 
 The screenshot visibly contains the prompt text `administrator@kali` and the command `uname -a`, followed by Linux system information. 
 
 Wireshark uses different colors for the two directions of the stream; these colors represent directions, **not intrinsically malicious versus legitimate traffic**.
+
+### Figure 6 - Telnet Session Reconstruction
+
+![Telnet Session Reconstruction](https://raw.githubusercontent.com/donmal/Network-Traffic-Analysis-and-Threat-Hunting/main/images/tcp-reconnaissance-and-session-hijacking/telnet-sessin-reconstruction.jpeg)
 
 ### Results
 
