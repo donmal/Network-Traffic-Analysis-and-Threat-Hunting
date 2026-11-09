@@ -147,7 +147,9 @@ It may exclude relevant smaller frames and include normal ping packets.
 
 ### Evidence
 
-*Figure 1. Wireshark inspection of `funky_icmp.pcap` using `icmp and frame.len > 42`; status bar shows 308 total packets and 221 displayed (71.8%). The screenshot shows ICMP echo requests and replies with varied frame lengths.*
+### Figure 13 - ICMP Traffic Analysis 
+
+![ICMP Traffic Analysis](images/soc-network-anomaly-investigation/icmp-traffic-analysis.jpeg)
 
 ### Recorded Observations
 
